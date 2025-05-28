@@ -1,0 +1,215 @@
+{
+  "topic_act_mapping": {
+    "Guardianship & Administration": [
+      "Guardianship and Administration Act 1990"
+    ],
+    "Commercial Tenancy": [
+      "Commercial Tenancy (Retail Shops) Agreements Act 1985",
+      "Competition Policy Reform (Western Australia) Act 1996",
+      "Hire-Purchase Act 1959",
+      "Short-Term Rental Accommodation Act 2024"
+    ],
+    "Planning, Development & Valuation": [
+      "Planning and Development Act 2005",
+      "Planning and Development (Development Assessment Panels) Regulations 2011",
+      "Planning and Development (Local Planning Schemes) Regulations 2015",
+      "Planning and Development Regulations 2009",
+      "Metropolitan Redevelopment Authority Act 2011",
+      "Metropolitan Redevelopment Authority Regulations 2011",
+      "Hope Valley-Wattleup Redevelopment Act 2000",
+      "Valuation of Land Act 1978",
+      "Land Administration Act 1997",
+      "Land Valuers Licensing Act 1978",
+      "Licensed Surveyors Act 1909",
+      "Transfer of Land Regulations 2004",
+      "Electronic Conveyancing Act 2014",
+      "Perth Parking Management Act 1999",
+      "Perth Parking Management Act 2023",
+      "Heritage Act 2018"
+    ],
+    "Building & Construction": [
+      "Building Act 2011",
+      "Building Regulations 2012",
+      "Building Services (Complaint Resolution and Administration) Act 2011",
+      "Building Services (Registration) Act 2011",
+      "Building and Construction Industry (Security of Payment) Act 2021",
+      "Construction Contracts (Former Provisions) Act 2004",
+      "Home Building Contracts Act 1991",
+      "Architects Act 2004",
+      "Plumbers Licensing and Plumbing Standards Regulations 2000"
+    ],
+    "Strata Titles": [
+      "Strata Titles Act 1985"
+    ],
+    "Community Titles": [
+      "Community Titles Act 2018"
+    ],
+    "Firearms & Security Licences": [
+      "Firearms Act 1973",
+      "Security and Related Activities (Control) Act 1996",
+      "Pawnbrokers and Second-hand Dealers Act 1994",
+      "Dangerous Goods Safety Act 2004"
+    ],
+    "Vocational Regulation": [
+      "Health Practitioner Regulation National Law (WA) 2024",
+      "Pharmacy Act 2010",
+      "Teacher Registration Act 2012",
+      "Veterinary Practice Act 2021",
+      "Legal Profession Act 2008",
+      "Legal Profession Uniform Law (WA) 2022",
+      "Legal Profession Uniform Law Application Act 2022",
+      "Real Estate and Business Agents Act 1978",
+      "Settlement Agents Act 1981",
+      "Finance Brokers Control Act 1975",
+      "Motor Vehicle Dealers Act 1973",
+      "Motor Vehicle Drivers Instructors Act 1963",
+      "Motor Vehicle Repairers Act 2003",
+      "Employment Agents Act 1976",
+      "Debt Collectors Licensing Act 1964",
+      "Radiation Safety Act 1975",
+      "Electricity (Licensing) Regulations 1991",
+      "Procurement Act 2020"
+    ],
+    "Local Government (including dog & cat notices)": [
+      "Local Government Act 1995",
+      "Dog Act 1976",
+      "Dog Regulations 2013",
+      "Cat Act 2011",
+      "Cat (Uniform Local Provisions) Regulations 2013",
+      "Litter Act 1979",
+      "Cemeteries Act 1986",
+      "Graffiti Vandalism Act 2016",
+      "Control of Vehicles (Off-road Areas) Act 1978",
+      "Public Order in Streets Act 1984"
+    ],
+    "Residential Parks, Caravan & Camping": [
+      "Residential Parks (Long Stay Tenants) Act 2006",
+      "Caravan Parks and Camping Grounds Act 1995",
+      "Caravan Parks and Camping Grounds Regulations 1997"
+    ],
+    "Equal Opportunity": [
+      "Equal Opportunity Act 1984",
+      "Gender Reassignment Act 2000",
+      "Historical Homosexual Convictions Expungent Act 2018"
+    ],
+    "Incorporated Associations": [
+      "Associations Incorporation Act 2015"
+    ],
+    "Road Traffic & Transport": [
+      "Road Traffic (Administration) Regulations 2014",
+      "Transport (Road Passenger Services) Act 2018",
+      "Transport Co-ordination Act 1966",
+      "Towing Services Act 2024",
+      "Rail Safety National Law (WA) Act 2024"
+    ],
+    "Mental Health": [
+      "Mental Health Act 2014"
+    ],
+    "Retirement Villages": [
+      "Retirement Villages Act 1992",
+      "Retirement Villages Regulations 1992",
+      "Fair Trading (Retirement Villages Code) Regulations 2022"
+    ],
+    "Environment & Resources": [
+      "Environmental Protection Act 1986",
+      "Aboriginal Heritage Act 1972",
+      "Biodiversity Conservation Regulations 2018",
+      "Biological Control Act 1986",
+      "Biosecurity and Agriculture Management Act 2007",
+      "Biosecurity and Agriculture Management Regulations 2013",
+      "Biosecurity and Agriculture Management (Agriculture Standards) Regulations 2013",
+      "Biosecurity and Agriculture Management (Identification and Movement of Stock and Apiaries) Regulations 2013",
+      "Biosecurity and Agriculture Management (Quality Assurance and Accreditation) Regulations 2013",
+      "Animal Welfare Act 2002",
+      "Food Act 2008",
+      "Agricultural Produce Commission Act 1988",
+      "Fish Resources Management Act 1994",
+      "Fisheries Adjustment Schemes Act 1987",
+      "Fishing and Related Industries Compensation (Marine Reserves) Act 1997",
+      "Pearling Act 1990",
+      "Soil and Land Conservation Act 1945",
+      "Veterinary Chemical Control and Animal Feeding Stuffs Act 1976",
+      "Western Australian Meat Industry Authority Act 1976",
+      "Mining Act 1978",
+      "Mining Rehabilitation Fund Act 2012",
+      "Minerals Research Institute of Western Australia Act 2013",
+      "Mines Safety and Inspection Levy Regulations 2010",
+      "Petroleum (Submerged Lands) Act 1982",
+      "Petroleum and Geothermal Energy Resources Act 1967",
+      "Petroleum and Geothermal Energy Safety Levies Act 2011",
+      "Petroleum Pipelines Act 1969",
+      "Petroleum Retailers Rights and Liabilities Act 1982",
+      "Water Services Act 2012",
+      "Water Services Regulations 2013",
+      "Water Agencies (Powers) Act 1984",
+      "Country Areas Water Supply Act 1947",
+      "Metropolitan Water Supply, Sewerage and Drainage Act 1909",
+      "Rights in Water and Irrigation Act 1914",
+      "Waterways Conservation Act 1976",
+      "Swan and Canning Rivers Management Act 2006",
+      "Waste Avoidance and Resource Recovery Act 2007",
+      "Waste Avoidance and Resource Recovery Levy Regulations 2008",
+      "Waste Avoidance and Resource Recovery (e-waste) Regulations 2024",
+      "Electricity Industry Act 2004",
+      "Electricity (Network Safety) Regulations 2015",
+      "Energy Coordination Act 1994",
+      "Energy Safety Act 2006",
+      "Gas Standards Act 1972",
+      "Maritime Archaeology Act 1973",
+      "Navigable Waters Regulations 1958",
+      "Jetties Act 1926",
+      "Shipping and Pilotage (Ports and Harbours) Regulations 1966",
+      "Western Australian Marine Act 1982",
+      "W.A Marine (Certificates of Competency and Safety Manning) Regulations 1983"
+    ],
+    "Children & Community Services": [
+      "National Disability Insurance Scheme (Worker Screening) Act 2020",
+      "Working With Children (Screening) Act 2004",
+      "Children and Community Services Act 2004",
+      "Adoption Act 1994",
+      "Adoption Regulations 1995",
+      "Child Care Services Act 2007",
+      "Child Care Services Regulations 2007",
+      "Education and Care Services National Law (WA) Act 2012",
+      "Births, Deaths and Marriages Registration Act 1998",
+      "Human Reproductive Technology Act 1991"
+    ],
+    "Voluntary Assisted Dying": [
+      "Voluntary Assisted Dying Act 2019"
+    ],
+    "Decision Review": [
+      "Parliamentary Commissioner Act 1971"
+    ],
+    "Other": [
+      "Business Names Act 1962",
+      "Limited Partnerships Act 2016",
+      "Chattel Securities Act 1987",
+      "Combat Sports Act 1987",
+      "Credit (Administration) Act 1984",
+      "Credit Act 1984",
+      "Cremation Act 1929",
+      "Emergency Management Act 2005",
+      "Fair Trading Act 2010",
+      "Fire and Emergency Services Act 1998",
+      "Fire Brigades Act 1942",
+      "First Home Owner Grant Act 2000",
+      "Health (Aquatic Facilities) Regulations 2007",
+      "Health (Asbestos) Regulations 1992",
+      "Health (Miscellaneous Provisions) Act 1911",
+      "Health (Pesticides) Regulations 2011",
+      "Health and Disability Services (Complaints) Act 1995",
+      "Industrial Relations Act 1979",
+      "Liquor Control Act 1988",
+      "Major Events (Aerial Advertising) Act 2009",
+      "Medicines and Poisons Act 2014",
+      "Police Act 1892",
+      "Private Hospitals and Health Services Act 1927",
+      "Public Health Act 2016",
+      "Royal Agriculture Society Act 1926",
+      "State Superannuation Act 2000",
+      "Taxation Administration Act 2003",
+      "Tobacco Products Control Act 2006",
+      "Workers Compensation and Injury Management Regulations 2024"
+    ]
+  }
+} 

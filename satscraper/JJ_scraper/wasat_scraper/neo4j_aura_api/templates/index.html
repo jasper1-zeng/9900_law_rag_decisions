@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASAT Legal Database API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .card {
+            background: #f9f9f9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+        code {
+            background: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .endpoints {
+            margin-top: 20px;
+        }
+        .endpoint {
+            margin-bottom: 10px;
+        }
+        .method {
+            background: #34495e;
+            color: white;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>WASAT Legal Database API</h1>
+    
+    <div class="card">
+        <h2>Welcome to the API</h2>
+        <p>This API provides access to WASAT legal cases and their relationships.</p>
+        <p>
+            <a href="/api/docs" class="btn">API Documentation</a>
+            <a href="/visualizer" class="btn">Case Graph Visualizer</a>
+        </p>
+    </div>
+    
+    <div class="card">
+        <h2>Key Features</h2>
+        <ul>
+            <li>Search for cases by citation number</li>
+            <li>Get detailed information about specific cases</li>
+            <li>Visualize relationships between cases</li>
+            <li>Network analysis of case citation patterns</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h2>Quick Examples</h2>
+        <div class="endpoints">
+            <div class="endpoint">
+                <span class="method">GET</span>
+                <code>/api/cases/search?q=your_search_term</code> - Search for cases
+            </div>
+            <div class="endpoint">
+                <span class="method">GET</span>
+                <code>/api/cases/[2022] WASAT 1</code> - Get case details
+            </div>
+            <div class="endpoint">
+                <span class="method">GET</span>
+                <code>/api/cases/[2022] WASAT 1/graph</code> - Get case visualization data
+            </div>
+            <div class="endpoint">
+                <span class="method">POST</span>
+                <code>/api/network</code> - Get network of multiple cases
+            </div>
+        </div>
+    </div>
+</body>
+</html>

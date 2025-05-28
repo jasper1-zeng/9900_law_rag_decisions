@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <title>Paper Plane Button</title>
+  
+  <!-- Background with shadow -->
+  <rect width="64" height="64" rx="14" fill="#425334" filter="url(#shadow)"/>
+  
+  <!-- Paper plane icon -->
+  <g transform="translate(16 16)">
+    <path fill="#f0f0f0" d="M32 16L12 32l20-4-8-12 28 8-28 8 8-12-20-4z">
+      <animate attributeName="opacity" values="1;0.8;1" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path fill="none" stroke="#FFFFFF" stroke-width="2" 
+          d="M16 16L32 32M32 16L16 32"/>
+  </g>
+
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="3" dy="5" stdDeviation="4" flood-color="#2a3520" flood-opacity="0.3"/>
+    </filter>
+    
+    <linearGradient id="paperGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#e0e0e0"/>
+    </linearGradient>
+  </defs>
+</svg>

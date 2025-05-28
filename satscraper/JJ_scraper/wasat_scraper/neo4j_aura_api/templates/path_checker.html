@@ -1,0 +1,565 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Relationship Path Checker</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .header {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .title {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .content {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+        .sidebar {
+            width: 300px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        .visualization {
+            flex-grow: 1;
+            position: relative;
+        }
+        svg {
+            width: 100%;
+            height: 100%;
+            background-color: #f5f5f5;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .path-list {
+            margin-top: 20px;
+        }
+        .path-item {
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border-left: 4px solid #4CAF50;
+        }
+        .path-item:hover {
+            background: #f0f0f0;
+        }
+        .path-item.active {
+            background: #e7f3e8;
+            border-left-color: #2E7D32;
+        }
+        .path-detail {
+            font-size: 12px;
+            color: #666;
+        }
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 100;
+        }
+        .no-result {
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            margin-top: 20px;
+        }
+        .case-suggestion {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            width: 100%;
+            max-height: 150px;
+            overflow-y: auto;
+            position: absolute;
+            z-index: 100;
+            display: none;
+        }
+        .suggestion-item {
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+        .suggestion-item:hover {
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">WASAT Legal Case Path Checker</div>
+            <a href="/" class="btn">Back to Home</a>
+        </div>
+        
+        <div class="content">
+            <div class="sidebar">
+                <h2>Find Relationship Paths</h2>
+                <p>Check how two cases are related through citation networks.</p>
+                
+                <div class="form-group">
+                    <label for="sourceCase">Source Case:</label>
+                    <input type="text" id="sourceCase" class="form-control" placeholder="Enter citation number...">
+                    <div id="sourceSuggestions" class="case-suggestion"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="targetCase">Target Case:</label>
+                    <input type="text" id="targetCase" class="form-control" placeholder="Enter citation number...">
+                    <div id="targetSuggestions" class="case-suggestion"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxDepth">Maximum Path Length:</label>
+                    <select id="maxDepth" class="form-control">
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                
+                <button id="findPaths" class="btn">Find Paths</button>
+                
+                <div id="pathResults" class="path-list"></div>
+            </div>
+            
+            <div class="visualization">
+                <div id="loading" class="loading" style="display: none;">Searching for paths...</div>
+                <div id="tooltip" class="tooltip"></div>
+                <svg id="graph"></svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API endpoint base URL
+        const apiBaseUrl = '';
+        let currentGraphData = null;
+        let simulation = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const sourceInput = document.getElementById('sourceCase');
+            const targetInput = document.getElementById('targetCase');
+            const sourceSuggestions = document.getElementById('sourceSuggestions');
+            const targetSuggestions = document.getElementById('targetSuggestions');
+            
+            // Handle source case input with suggestions
+            sourceInput.addEventListener('input', function() {
+                if (this.value.length >= 3) {
+                    fetchCaseSuggestions(this.value, sourceSuggestions, sourceInput);
+                } else {
+                    sourceSuggestions.style.display = 'none';
+                }
+            });
+            
+            // Handle target case input with suggestions
+            targetInput.addEventListener('input', function() {
+                if (this.value.length >= 3) {
+                    fetchCaseSuggestions(this.value, targetSuggestions, targetInput);
+                } else {
+                    targetSuggestions.style.display = 'none';
+                }
+            });
+            
+            // Handle find paths button click
+            document.getElementById('findPaths').addEventListener('click', function() {
+                findPaths();
+            });
+            
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', function(e) {
+                if (e.target !== sourceInput && e.target !== targetInput && 
+                    !sourceSuggestions.contains(e.target) && !targetSuggestions.contains(e.target)) {
+                    sourceSuggestions.style.display = 'none';
+                    targetSuggestions.style.display = 'none';
+                }
+            });
+        });
+        
+        function fetchCaseSuggestions(query, suggestionContainer, inputElement) {
+            fetch(`${apiBaseUrl}/api/cases/search?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    suggestionContainer.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        suggestionContainer.style.display = 'none';
+                        return;
+                    }
+                    
+                    data.forEach(case_data => {
+                        const item = document.createElement('div');
+                        item.className = 'suggestion-item';
+                        item.textContent = case_data.citation_number;
+                        item.addEventListener('click', function() {
+                            inputElement.value = case_data.citation_number;
+                            suggestionContainer.style.display = 'none';
+                        });
+                        suggestionContainer.appendChild(item);
+                    });
+                    
+                    suggestionContainer.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error fetching suggestions:', error);
+                    suggestionContainer.style.display = 'none';
+                });
+        }
+        
+        function findPaths() {
+            const sourceCase = document.getElementById('sourceCase').value.trim();
+            const targetCase = document.getElementById('targetCase').value.trim();
+            const maxDepth = document.getElementById('maxDepth').value;
+            
+            if (!sourceCase || !targetCase) {
+                alert('Please enter both source and target case citation numbers.');
+                return;
+            }
+            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('pathResults').innerHTML = '';
+            
+            // Clear current graph
+            d3.select('#graph').selectAll('*').remove();
+            
+            // Make API request to find paths
+            fetch(`${apiBaseUrl}/api/network/path`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    source_citation: sourceCase,
+                    target_citation: targetCase,
+                    max_depth: parseInt(maxDepth)
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data.paths && data.paths.length > 0) {
+                    displayPathResults(data);
+                } else {
+                    // No paths found
+                    document.getElementById('pathResults').innerHTML = `
+                        <div class="no-result">
+                            <p>No paths found between these cases within the specified depth.</p>
+                            <p>Try increasing the maximum path length or using different cases.</p>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error finding paths:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('pathResults').innerHTML = `
+                    <div class="no-result">
+                        <p>Error: ${error.message}</p>
+                        <p>Please check that both cases exist in the database.</p>
+                    </div>
+                `;
+            });
+        }
+        
+        function displayPathResults(data) {
+            const pathResults = document.getElementById('pathResults');
+            pathResults.innerHTML = '<h3>Paths Found:</h3>';
+            
+            data.paths.forEach((path, index) => {
+                const pathItem = document.createElement('div');
+                pathItem.className = 'path-item';
+                pathItem.setAttribute('data-path-index', index);
+                
+                // Create path summary
+                let pathText = `Path ${index + 1}: `;
+                pathText += `${path.length} ${path.length === 1 ? 'step' : 'steps'}`;
+                
+                // Path details - show the sequence of nodes
+                let detailText = '';
+                path.nodes.forEach((node, i) => {
+                    detailText += node.label;
+                    if (i < path.nodes.length - 1) {
+                        detailText += ' → ';
+                    }
+                });
+                
+                pathItem.innerHTML = `
+                    <div>${pathText}</div>
+                    <div class="path-detail">${detailText}</div>
+                `;
+                
+                // Add click event to visualize this path
+                pathItem.addEventListener('click', function() {
+                    // Remove active class from all paths
+                    document.querySelectorAll('.path-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    // Add active class to selected path
+                    this.classList.add('active');
+                    
+                    // Visualize this path
+                    visualizePath(path);
+                });
+                
+                pathResults.appendChild(pathItem);
+            });
+            
+            // Automatically visualize the first path
+            if (data.paths.length > 0) {
+                document.querySelector('.path-item').classList.add('active');
+                visualizePath(data.paths[0]);
+            }
+        }
+        
+        function visualizePath(path) {
+            // Prepare data for D3
+            const nodes = path.nodes.map(node => ({
+                id: node.id,
+                label: node.label,
+                type: node.type,
+                properties: node.properties
+            }));
+            
+            // Create links from the path sequence
+            const links = [];
+            for (let i = 0; i < path.nodes.length - 1; i++) {
+                links.push({
+                    source: path.nodes[i].id,
+                    target: path.nodes[i+1].id,
+                    type: path.relationships[i].type.toLowerCase(),
+                    id: `${i}-${path.relationships[i].type}`
+                });
+            }
+            
+            // Store the current graph data
+            currentGraphData = { nodes, links };
+            
+            // Render the graph
+            renderGraph({ nodes, links });
+        }
+        
+        function renderGraph(data) {
+            const svg = d3.select('#graph');
+            svg.selectAll('*').remove();
+            
+            const width = svg.node().getBoundingClientRect().width;
+            const height = svg.node().getBoundingClientRect().height;
+            
+            // Create a group for zoom behavior
+            const g = svg.append('g');
+            
+            // Create zoom behavior
+            const zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+            
+            svg.call(zoom);
+            
+            // Define arrow markers for directed links
+            svg.append('defs').append('marker')
+                .attr('id', 'arrowhead')
+                .attr('viewBox', '-0 -5 10 10')
+                .attr('refX', 20)
+                .attr('refY', 0)
+                .attr('orient', 'auto')
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('xoverflow', 'visible')
+                .append('path')
+                .attr('d', 'M 0,-5 L 10,0 L 0,5')
+                .attr('fill', '#999')
+                .style('stroke', 'none');
+            
+            // Define color scale for node types
+            const colorScale = d3.scaleOrdinal()
+                .domain(['case', 'law', 'section'])
+                .range(['#6baed6', '#fd8d3c', '#74c476']);
+            
+            // Create links
+            const link = g.append('g')
+                .selectAll('line')
+                .data(data.links)
+                .enter().append('line')
+                .attr('class', 'link')
+                .attr('stroke', '#999')
+                .attr('stroke-width', 1.5)
+                .attr('marker-end', 'url(#arrowhead)')
+                .on('mouseenter', function(event, d) {
+                    showTooltip(event, `${d.type}`);
+                })
+                .on('mousemove', function(event) {
+                    moveTooltip(event);
+                })
+                .on('mouseleave', function() {
+                    hideTooltip();
+                });
+            
+            // Create nodes
+            const node = g.append('g')
+                .selectAll('circle')
+                .data(data.nodes)
+                .enter().append('circle')
+                .attr('class', 'node')
+                .attr('r', d => d.type === 'case' ? 12 : (d.type === 'law' ? 10 : 8))
+                .attr('fill', d => colorScale(d.type))
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 1.5)
+                .on('mouseenter', function(event, d) {
+                    showTooltip(event, d.label);
+                })
+                .on('mousemove', function(event) {
+                    moveTooltip(event);
+                })
+                .on('mouseleave', function() {
+                    hideTooltip();
+                })
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Add labels to nodes
+            const labels = g.append('g')
+                .selectAll('text')
+                .data(data.nodes)
+                .enter().append('text')
+                .text(d => d.label)
+                .attr('font-size', 10)
+                .attr('dx', 15)
+                .attr('dy', 4);
+            
+            // Define force simulation
+            simulation = d3.forceSimulation(data.nodes)
+                .force('link', d3.forceLink(data.links).id(d => d.id).distance(120))
+                .force('charge', d3.forceManyBody().strength(-500))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('x', d3.forceX(width / 2).strength(0.1))
+                .force('y', d3.forceY(height / 2).strength(0.1))
+                .on('tick', ticked);
+            
+            function ticked() {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y);
+                
+                labels
+                    .attr('x', d => d.x)
+                    .attr('y', d => d.y);
+            }
+            
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+            
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+            
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+            
+            // Auto-center and fit zoom
+            svg.call(zoom.transform, d3.zoomIdentity);
+        }
+        
+        function showTooltip(event, text) {
+            const tooltip = d3.select('#tooltip')
+                .style('opacity', 0.9)
+                .html(text);
+            moveTooltip(event);
+        }
+        
+        function moveTooltip(event) {
+            d3.select('#tooltip')
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 28) + 'px');
+        }
+        
+        function hideTooltip() {
+            d3.select('#tooltip').style('opacity', 0);
+        }
+    </script>
+</body>
+</html>

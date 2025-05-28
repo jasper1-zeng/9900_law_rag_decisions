@@ -1,0 +1,4 @@
+/* Interactive sample questions CSS */
+.questions-section li { cursor: pointer; transition: all 0.2s ease; }
+.questions-section li:hover { background-color: #e9f5e9; border-color: #9cc09c; transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+.questions-section li:active { transform: translateY(0); background-color: #d3f0d3; }

@@ -1,0 +1,193 @@
+"""
+Simplified pytest configuration file for defining fixtures and test setup.
+
+This file contains fixtures that can be shared across multiple test files.
+"""
+import pytest
+import os
+import sys
+from typing import List, Dict, Any, Generator
+from unittest.mock import MagicMock
+import numpy as np
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, Session
+
+# Add the project root to the Python path to allow imports
+backend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if backend_dir not in sys.path:
+    sys.path.insert(0, backend_dir)
+
+# Import required modules
+from app.config import settings
+from app.db.database import get_db, engine
+
+
+@pytest.fixture
+def mock_embedding() -> List[float]:
+    """Fixture for a mock embedding vector."""
+    return [float(i) / 100.0 for i in range(768)]  # Using 768 as default embedding size
+
+
+@pytest.fixture
+def mock_documents() -> List[Dict[str, Any]]:
+    """Fixture for mock retrieved documents."""
+    return [
+        {
+            "id": "case1",
+            "case_title": "Test Case 1",
+            "reasons_summary": "This is a test case about rental properties.",
+            "citation_number": "2023 SAT 123",
+            "case_topic": "Commercial Tenancy",
+            "catchwords": "rental, property, commercial",
+            "case_url": "https://example.com/case1",
+            "similarity": 0.85
+        },
+        {
+            "id": "case2",
+            "case_title": "Test Case 2",
+            "reasons_summary": "This is a test case about eviction notices.",
+            "citation_number": "2023 SAT 124",
+            "case_topic": "Commercial Tenancy",
+            "catchwords": "eviction, notice, tenant",
+            "case_url": "https://example.com/case2",
+            "similarity": 0.75
+        }
+    ]
+
+
+@pytest.fixture
+def mock_case_chunks() -> List[Dict[str, Any]]:
+    """Fixture for mock retrieved case chunks."""
+    return [
+        {
+            "chunk_id": "chunk1",
+            "chunk_text": "This is a chunk of text from case 1 about rental properties.",
+            "chunk_index": 1,
+            "case_id": "case1",
+            "case_topic": "Commercial Tenancy",
+            "case_title": "Test Case 1",
+            "citation_number": "2023 SAT 123",
+            "case_url": "https://example.com/case1",
+            "similarity": 0.88
+        },
+        {
+            "chunk_id": "chunk2",
+            "chunk_text": "This is a chunk of text from case 2 about eviction notices.",
+            "chunk_index": 1,
+            "case_id": "case2",
+            "case_topic": "Commercial Tenancy",
+            "case_title": "Test Case 2",
+            "citation_number": "2023 SAT 124",
+            "case_url": "https://example.com/case2",
+            "similarity": 0.78
+        }
+    ]
+
+
+@pytest.fixture
+def combined_context(mock_documents, mock_case_chunks) -> List[Dict[str, Any]]:
+    """Fixture for mock combined context."""
+    combined = []
+    
+    # Add document-level context
+    for doc in mock_documents:
+        combined.append({
+            "type": "document",
+            **doc
+        })
+    
+    # Add chunk-level context
+    for chunk in mock_case_chunks:
+        combined.append({
+            "type": "chunk",
+            "reasons_summary": chunk["chunk_text"],  # Map chunk_text to reasons_summary
+            **{k: v for k, v in chunk.items() if k != "chunk_text"}
+        })
+    
+    # Sort by similarity (highest first)
+    combined.sort(key=lambda x: x["similarity"], reverse=True)
+    
+    return combined
+
+
+@pytest.fixture
+def mock_get_model() -> MagicMock:
+    """Fixture for mocking the embedding model."""
+    mock_model = MagicMock()
+    
+    # Create a different mock encode function to handle both single and batch inputs
+    def mock_encode(texts, **kwargs):
+        # Check if input is a list or a single string
+        if isinstance(texts, list):
+            # Return a batch of embeddings
+            batch_size = len(texts)
+            return np.random.rand(batch_size, settings.EMBEDDING_DIM).astype(np.float32)
+        else:
+            # Return a single embedding
+            return np.random.rand(settings.EMBEDDING_DIM).astype(np.float32)
+    
+    mock_model.encode = mock_encode
+    return mock_model
+
+
+@pytest.fixture
+def mock_db() -> Generator[Session, None, None]:
+    """
+    Fixture for providing a mock database session.
+    
+    This creates a mock session object that can be used in tests without
+    actually connecting to a database.
+    """
+    mock_session = MagicMock(spec=Session)
+    yield mock_session
+
+
+@pytest.fixture
+def test_db() -> Generator[Session, None, None]:
+    """
+    Fixture for providing a real database session for testing.
+    
+    This will be skipped if the database is not available.
+    """
+    try:
+        # Check if database is available
+        with engine.connect() as conn:
+            result = conn.execute("SELECT 1").scalar()
+            if result != 1:
+                pytest.skip("Database not available")
+    except Exception as e:
+        pytest.skip(f"Database connection failed: {e}")
+    
+    # Create a session using the real database
+    db = next(get_db())
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@pytest.fixture
+def sample_queries() -> List[Dict[str, Any]]:
+    """Fixture providing sample legal queries for testing RAG retrieval."""
+    return [
+        {
+            "query": "What are the requirements for terminating a commercial lease early?",
+            "topic": "Commercial Tenancy"
+        },
+        {
+            "query": "Can a landlord evict a tenant without notice?",
+            "topic": "Residential Tenancy"
+        },
+        {
+            "query": "What constitutes undue hardship in guardianship cases?",
+            "topic": "Guardianship & Administration"
+        },
+        {
+            "query": "What are the time limits for appealing a SAT decision?",
+            "topic": "Appeals"
+        },
+        {
+            "query": "What evidence is required for proving building defects?",
+            "topic": "Building & Construction"
+        }
+    ] 

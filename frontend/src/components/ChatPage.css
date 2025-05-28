@@ -1,0 +1,932 @@
+/* 全局样式 */
+html, body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #435340;
+    color: #333;
+    height: 100%;
+    overflow: hidden; /* Prevent default body scrolling */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Use 100vh instead of min-height to match viewport exactly */
+    width: 100%;
+    overflow: hidden; /* Prevent any container scrolling */
+    position: fixed; /* Ensure container stays fixed in viewport */
+    top: 0;
+    left: 0;
+}
+
+/* 顶部导航栏 */
+.top-bar {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 60px;
+    background-color: #065F46;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.avatar {
+    width: 40px;
+    /* Adjust size */
+    height: 40px;
+    border-radius: 50%;
+    /* Makes it round */
+    object-fit: cover;
+    margin-left: auto;
+    /* Pushes avatar to the right */
+}
+
+.nav-btn {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    border: none;
+    padding: 10px 15px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.nav-btn.active {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 15%;
+    width: 70%;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+/* 主内容区域 */
+.main-container {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 60px); /* Exact height (viewport minus top bar) */
+    position: relative;
+    overflow: hidden; /* Hide both horizontal and vertical overflow */
+    width: 100%;
+}
+
+/* 左侧侧边栏 */
+.sidebar {
+    width: 250px;
+    min-width: 250px;
+    background-color: #435340;
+    color: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    z-index: 10;
+    transition: transform 0.3s ease, width 0.3s ease, min-width 0.3s ease;
+}
+
+.sidebar.hidden {
+    transform: translateX(-250px);
+    width: 0;
+    min-width: 0;
+    padding: 0;
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+    position: absolute;
+    top: 20px;
+    width: 24px;
+    height: 40px;
+    background-color: #435340;
+    color: #fff;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    outline: none;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+}
+
+/* Content Wrapper (contains main-content and links-window) */
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    padding-left: 20px;
+    transition: padding-left 0.3s ease;
+    width: calc(100% - 20px); /* Account for padding */
+    overflow-x: hidden; /* Prevent horizontal overflow */
+}
+
+.sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.new-chat-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #2d422d;
+    /* 蓝色按钮 */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.new-chat-btn:hover {
+    background-color: #065F46;
+    /* 深蓝色悬停效果 */
+}
+
+.chat-history h3 {
+    font-size: 1rem;
+    color: #bdc3c7;
+    /* 浅灰色文字 */
+    margin: 10px 0;
+}
+
+.chat-history ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.chat-history ul li {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: #ddd;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-history ul li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.chat-history ul li.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    font-weight: bold;
+}
+
+.conversation-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.delete-conversation-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    transition: all 0.2s ease;
+    opacity: 0.3;
+}
+
+.chat-history ul li:hover .delete-conversation-btn {
+    opacity: 1;
+}
+
+.delete-conversation-btn:hover {
+    background-color: rgba(255, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 1);
+}
+
+.delete-conversation-btn:active {
+    transform: scale(0.9);
+}
+
+.delete-conversation-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #faf1e4;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 0 20px 0 0;
+    height: calc(100vh - 100px); /* Maintain consistency with container height calculations */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Only allow vertical scrolling within this element */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    position: relative;
+    transition: all 0.3s ease;
+    box-sizing: border-box; /* Include padding in height calculation */
+}
+
+.main-content.expanded {
+    padding-left: 40px; /* Increase padding when sidebar is hidden */
+}
+
+.answer-section {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 5px; /* Reduced from 10px */
+    margin-bottom: 5px; /* Reduced from 10px */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+/* 头部 */
+.header {
+    margin-bottom: 20px;
+    padding-left: 5px;
+}
+
+.main-content.expanded .header {
+    padding-left: 15px;
+}
+
+.header h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+}
+
+.header h1 span {
+    font-size: 1.8rem;
+    color: #065F46;
+    margin-left: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.header h2 {
+    font-size: 1.5rem;
+    color: #CEDEBD;
+    /* 蓝色 */
+    margin: 0;
+}
+
+/* Topic selection styles */
+.topic-selection {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.topic-selection label {
+    margin-right: 10px;
+    font-size: 0.95rem;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.topic-dropdown {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    font-size: 0.95rem;
+    color: #1f2937;
+    min-width: 240px;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.topic-dropdown:hover {
+    border-color: #9ca3af;
+}
+
+.topic-dropdown:focus {
+    border-color: #065F46;
+    box-shadow: 0 0 0 2px rgba(6, 95, 70, 0.2);
+}
+
+/* 问题部分 */
+.questions-section {
+    margin-bottom: 10px; /* Reduced from 20px */
+    flex-grow: 0;
+    padding: 5px 0; /* Reduced from 10px */
+    box-sizing: border-box;
+}
+
+.questions-section ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.questions-section li {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 10px;
+    margin-right: 10px; /* Reduce from 20px to 10px */
+    flex: 0 1 calc(50% - 20px); /* Make items take up roughly half the width minus margins */
+    box-sizing: border-box; /* Include padding in width calculation */
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: normal; /* Allow text to wrap */
+    overflow: hidden; /* Prevent any overflow */
+    text-overflow: ellipsis; /* Show ellipsis for overflowing text */
+}
+
+.questions-section li:hover {
+    background-color: #e9f5e9;
+    border-color: #9cc09c;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.questions-section li:active {
+    transform: translateY(0);
+    background-color: #d3f0d3;
+}
+
+/* Message input container to fix at bottom */
+.message-input-container {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 10px; /* Reduced from 20px */
+    background-color: #faf1e4;
+    z-index: 5;
+    box-sizing: border-box;
+}
+
+/* Uploaded file info banner */
+.uploaded-file-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #eaf4f0;
+    border: 1px solid #cce3d9;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #065F46;
+}
+
+.file-details {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.file-name {
+    font-weight: 500;
+    margin-right: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+
+.file-size {
+    color: #4B5563;
+    font-size: 0.8rem;
+}
+
+.clear-file-btn {
+    background: transparent;
+    border: none;
+    color: #4B5563;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.clear-file-btn:hover {
+    background-color: rgba(6, 95, 70, 0.1);
+    color: #065F46;
+}
+
+/* 消息输入部分 */
+.message-input {
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    min-height: 44px;
+}
+
+.message-input .text-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    outline: none;
+    resize: none;
+    overflow: auto;
+    max-height: 400px;
+    line-height: 1.5;
+    font-family: inherit;
+}
+
+.clear-input-btn {
+    background: transparent;
+    border: none;
+    color: #9CA3AF;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    transition: all 0.2s;
+    margin-right: 4px;
+}
+
+.clear-input-btn:hover {
+    background-color: #F3F4F6;
+    color: #4B5563;
+}
+
+.message-input .text-input::placeholder {
+    color: #999;
+}
+
+.file-upload-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 5px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.file-upload-btn:hover {
+    opacity: 1;
+}
+
+.file-upload-btn.uploading {
+    opacity: 1;
+    pointer-events: none;
+}
+
+.file-upload-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(6, 95, 70, 0.3);
+    border-radius: 50%;
+    border-top-color: #065F46;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.file-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.send-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 5px;
+    transition: all 0.2s ease;
+}
+
+.send-btn:hover {
+    background-color: #f1f1f1;
+    transform: translateY(-2px);
+}
+
+.send-btn:active {
+    transform: scale(0.95);
+}
+
+.send-arrow-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.send-btn:hover .send-arrow-icon path {
+    stroke: #043A2E;
+    stroke-width: 2.5;
+}
+
+/* 右侧链接窗口 */
+.links-window {
+    width: 250px;
+    /* 右侧窗口宽度 */
+    background-color: #CEDEBD;
+    /* 白色背景 */
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    height: calc(100vh - 100px);
+    /* 高度减去顶部导航栏和 padding */
+    overflow-y: auto;
+    /* 如果内容超出高度，显示滚动条 */
+}
+
+.chat-bubble {
+    max-width: 90%;
+    margin: 5px 6px; /* Added top/bottom margin of 5px */
+    padding: 10px 14px; /* Slightly reduced padding */
+    border-radius: 12px;
+    background-color: #f1f1f1;
+    line-height: 1.35;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.chat-bubble.user {
+    background-color: #d3f0e1;
+    align-self: flex-end;
+    text-align: right;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.chat-bubble.bot {
+    background-color: #ffffff;
+    align-self: flex-start;
+    text-align: left;
+    margin-right: auto;
+    margin-left: 20px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.chat-bubble.bot a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+/* Headings */
+.chat-bubble.bot h1, 
+.chat-bubble.bot h2, 
+.chat-bubble.bot h3 {
+    margin-top: 8px;
+    margin-bottom: 1px;
+    line-height: 1.2;
+}
+
+.chat-bubble.bot h1 {
+    font-size: 1.35rem;
+}
+
+.chat-bubble.bot h2 {
+    font-size: 1.15rem;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 2px;
+}
+
+.chat-bubble.bot h3 {
+    font-size: 1rem;
+    margin-top: 12px; /* Increased space before case headings */
+    margin-bottom: 2px;
+    font-weight: bold;
+    color: #2d422d;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 8px;
+}
+
+/* First case should not have top border */
+.chat-bubble.bot h2 + h3 {
+    border-top: none;
+    padding-top: 0;
+}
+
+/* All content immediately following headings should be indented */
+.chat-bubble.bot h2 + *,
+.chat-bubble.bot h3 + * {
+    margin-left: 15px; /* Indent content under h2/h3 */
+}
+
+/* Ensure lists are indented correctly relative to their container */
+.chat-bubble.bot ul,
+.chat-bubble.bot ol {
+    margin-left: 0;  /* Reset default list margin */
+    padding-left: 20px; /* Use padding for indentation */
+    margin-bottom: 4px;
+    margin-top: 1px;
+}
+
+/* Adjust bullet point display */
+.chat-bubble.bot li {
+    padding-left: 0;  /* Remove previous padding */
+    margin-bottom: 2px;
+    list-style-position: outside; /* Ensures bullet is outside text block */
+}
+
+/* Paragraphs */
+.chat-bubble.bot p {
+    margin-bottom: 4px;
+    margin-top: 2px;
+}
+
+/* Strong elements */
+.chat-bubble.bot strong {
+    font-weight: 600;
+    color: #2d422d;
+}
+
+.chat-bubble.bot.new-response {
+    animation: fadeIn 0.8s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0.5; background-color: rgba(240, 248, 255, 0.7); }
+    to { opacity: 1; background-color: white; }
+}
+
+.chat-bubble.bot.section-rendering {
+    animation: fadeInSection 0.5s ease;
+    transition: all 0.3s ease;
+}
+
+@keyframes fadeInSection {
+    from { opacity: 0.7; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.loading-text {
+    font-size: 15px;
+    color: #555;
+    margin-right: 2px;
+    line-height: 1.2;
+}
+
+.loading-animation {
+    display: inline-block;
+    position: relative;
+    line-height: 1;
+    font-size: 18px;
+    height: 18px;
+}
+
+.loading-animation::after {
+    content: "...";
+    position: static;
+    display: inline-block;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #777;
+    animation: dotsAnimation 1.5s infinite;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+@keyframes dotsAnimation {
+    0% { opacity: 0.3; transform: translateY(0); }
+    25% { opacity: 0.6; transform: translateY(-1px); }
+    50% { opacity: 1; transform: translateY(0); }
+    75% { opacity: 0.6; transform: translateY(1px); }
+    100% { opacity: 0.3; transform: translateY(0); }
+}
+
+.chat-bubble.bot.loading-bubble {
+    width: auto;
+    min-width: 120px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 15px;
+}
+
+.loading-history {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-style: italic;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.logout-btn {
+    background-color: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Hover effects for toggle button */
+.sidebar-toggle:hover {
+    background-color: #526a4e;
+}
+
+.sidebar-toggle:active {
+    transform: scale(0.95);
+}
+
+.sidebar-toggle.highlight {
+    background-color: #526a4e;
+}
+
+/* Fix any rendering issues with the rendering */
+.chat-bubble.bot.section-rendering pre,
+.chat-bubble.bot.section-rendering code {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Custom styling for markdown elements */
+.markdown-list {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.markdown-list-item {
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+.markdown-paragraph {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.markdown-h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: #065F46;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 5px;
+}
+
+.markdown-h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #065F46;
+}
+
+/* Styling for legal citations */
+.chat-bubble a {
+    color: #065F46;
+    text-decoration: none;
+    border-bottom: 1px dotted #065F46;
+}
+
+.chat-bubble a:hover {
+    color: #04402F;
+    border-bottom: 1px solid #04402F;
+}
+
+/* Styling for numbered lists in legal arguments */
+.chat-bubble ol {
+    margin-left: 0;
+    padding-left: 20px;
+    list-style-position: outside;
+}
+
+.chat-bubble ol li {
+    margin-bottom: 8px;
+    padding-left: 5px;
+}
+
+/* Improved styling for legal arguments numbered items */
+.chat-bubble p:has(+ ol) {
+    margin-bottom: 5px;
+}
+
+/* Make numbered insights and arguments stand out */
+.chat-bubble strong + br + strong {
+    display: inline-block;
+    margin-top: 5px;
+}
+
+/* Style for strengths and weaknesses */
+.chat-bubble strong:contains("Strength"), 
+.chat-bubble strong:contains("Weakness") {
+    color: #065F46;
+    display: block;
+    margin-top: 5px;
+}
+
+/* Special styling for Legal Reasoning and Supporting Cases labels */
+.chat-bubble strong:contains("Legal Reasoning"),
+.chat-bubble strong:contains("Supporting Case"),
+.chat-bubble strong:contains("Counter") {
+    display: block;
+    margin-top: 5px;
+    color: #065F46;
+}
+
+/* Extra spacing for Related Cases section */
+.chat-bubble h2:contains("Related Cases") {
+    margin-top: 30px;
+}
+
+.citation-graph-link {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+    padding: 12px 24px;
+    background-color: #065F46;
+    color: white !important;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    max-width: 400px;
+    transition: background-color 0.2s;
+}
+
+.citation-graph-link:hover {
+    background-color: #054e38;
+    text-decoration: none !important;
+}

@@ -1,0 +1,174 @@
+/* Outer container */
+.login-container {
+    background-image: url('./assets/background.svg');
+    background-size: cover;
+    /* Background image covers the entire page */
+    background-position: center;
+    /* Background image centered */
+    background-repeat: no-repeat;
+    /* Prevent background image from repeating */
+    min-height: 100vh;
+    /* Container takes full viewport height */
+    width: 100vw;
+    /* Container takes full viewport width */
+    display: flex;
+    /* Use Flexbox layout */
+    justify-content: left;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    padding: 2rem;
+    /* Dynamic padding */
+}
+
+/* Content container */
+.content-container {
+    background-color: "tranparent";
+    /* Semi-transparent green background */
+    padding: clamp(1rem, 5vw, 3rem);
+    /* Dynamic padding */
+    border-radius: 1rem;
+    /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Shadow */
+    text-align: center;
+    /* Center text */
+    width: 90%;
+    /* 90% width */
+    max-width: 400px;
+    /* Maximum width */
+}
+
+/* Avatar */
+.avatar {
+    width: clamp(120px, 30vw, 180px);
+    /* Dynamic width */
+    height: clamp(120px, 30vw, 180px);
+    /* Dynamic height */
+    border-radius: 50%;
+    /* Circular avatar */
+}
+
+/* Welcome title */
+.welcome-title {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    color: #FEF3C7;
+    /* Dynamic font size */
+    font-weight: bold;
+    /* Bold text */
+    margin: 1rem 0;
+    /* Margin */
+
+}
+
+/* Input container */
+.input-container {
+    margin-bottom: 1rem;
+    /* Bottom margin */
+    width: 100%;
+    /* Full width */
+}
+
+/* Input label */
+.input-label {
+    display: block;
+    /* Block-level element */
+    text-align: left;
+    /* Left-aligned text */
+    font-size: clamp(0.875rem, 3vw, 1rem);
+    /* Dynamic font size */
+    margin-bottom: 0.5rem;
+    /* Bottom margin */
+}
+
+/* Input field */
+.input-field {
+    width: 100%;
+    /* Full width */
+    padding: 0.75rem;
+    /* Padding */
+    border-bottom: 2px solid #CBD5E0;
+    /* Bottom border */
+    background-color: transparent;
+    /* Transparent background */
+    outline: none;
+    /* Remove outline */
+    color: white;
+    /* Text color */
+    font-size: clamp(0.875rem, 3vw, 1rem);
+    /* Dynamic font size */
+}
+
+/* Links container */
+.links-container {
+    display: flex;
+    /* Use Flexbox layout */
+    justify-content: space-between;
+    /* Space between links */
+    width: 100%;
+    /* Full width */
+    margin-bottom: 1.5rem;
+    /* Bottom margin */
+}
+
+/* Link */
+.link {
+    color: white;
+    /* Text color */
+    text-decoration: underline;
+    /* Underline */
+    font-size: clamp(0.75rem, 3vw, 0.875rem);
+    /* Dynamic font size */
+}
+
+/* Login button */
+.login-button {
+    background-color: #FEF3C7;
+    /* Background color */
+    color: #065F46;
+    /* Text color */
+    padding: clamp(0.5rem, 2vw, 1rem) clamp(1rem, 4vw, 2rem);
+    /* Dynamic padding */
+    border-radius: 0.5rem;
+    /* Rounded corners */
+    font-weight: bold;
+    /* Bold text */
+    border: none;
+    /* Remove border */
+    cursor: pointer;
+    /* Pointer cursor */
+    font-size: clamp(0.875rem, 3vw, 1rem);
+    /* Dynamic font size */
+}
+
+/* Error message */
+.error-message {
+    color: white;
+    background-color: rgba(254, 226, 226, 0.2);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    text-align: left;
+    border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+/* Success message */
+.success-message {
+    color: white;
+    background-color: rgba(209, 250, 229, 0.2);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    text-align: left;
+    border: 1px solid rgba(16, 185, 129, 0.5);
+}
+
+/* Instruction text */
+.instruction-text {
+    color: #CBD5E0;
+    margin-bottom: 1.5rem;
+    font-size: clamp(0.75rem, 3vw, 0.875rem);
+    text-align: left;
+}

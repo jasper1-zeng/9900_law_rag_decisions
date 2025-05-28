@@ -1,0 +1,70 @@
+{
+  "name": "sats-search-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.8.4",
+    "d3": "^7.9.0",
+    "docx-preview": "^0.3.5",
+    "pdfjs-dist": "^5.1.91",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.5.2",
+    "react-scripts": "5.0.1",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:component": "cypress open --component",
+    "test:component:headless": "cypress run --component",
+    "test:component:coverage": "cypress run --component --coverage",
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:e2e": "start-server-and-test start http://localhost:3000 cypress:run",
+    "test:all": "npm run test:component:headless && npm run test:e2e",
+    "test:ci": "CI=true npm run test:all"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.24.1",
+    "@babel/preset-react": "^7.23.3",
+    "babel-jest": "^29.7.0",
+    "babel-loader": "^8.3.0",
+    "css-loader": "^6.7.3",
+    "cypress": "^14.3.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "start-server-and-test": "^2.0.11",
+    "style-loader": "^3.3.2",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
+  }
+}
